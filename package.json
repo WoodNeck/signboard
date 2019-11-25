@@ -1,0 +1,48 @@
+{
+  "name": "signboard.js",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/signboard.js",
+  "module": "lib/signboard.esm.js",
+  "types": "lib/declaration/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./lib && rollup -c && npm run declaration",
+    "build:windows": "rd /s /q ./lib || rollup -c && npm run declaration:windows",
+    "declaration": "rm -rf ./lib/declaration && tsc -p tsconfig.json",
+    "declaration:windows": "rd /s /q ./lib || tsc -p tsconfig.json",
+    "demo:build": "npm run build && cpx 'lib/**/*' demo/release/latest/lib --clean",
+    "demo:prebuild-version": "cpx 'lib/**/*' demo/release/$npm_package_version/lib --clean && cpx 'docs/**/*' demo/release/$npm_package_version/docs --clean",
+    "demo:prebuild-latest": "cpx 'lib/**/*' demo/release/latest/lib --clean && cpx 'docs/**/*' demo/release/latest/docs --clean",
+    "demo:deploy": "npm run build && npm run doc && npm run demo:prebuild-version && npm run demo:prebuild-latest && gh-pages -d demo/",
+    "doc": "rm -rf ./docs && jsdoc -c jsdoc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WoodNeck/signboard.js.git"
+  },
+  "author": "WoodNeck",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WoodNeck/signboard.js/issues"
+  },
+  "homepage": "https://github.com/WoodNeck/signboard.js#readme",
+  "devDependencies": {
+    "@daybrush/jsdoc": "^0.3.7",
+    "@egjs/build-helper": "0.0.5",
+    "cpx": "^1.5.0",
+    "docdash": "^1.1.1",
+    "gh-pages": "2.0.1",
+    "rollup": "^1.10.1",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-prototype-minify": "^1.0.5",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-uglify": "^6.0.2",
+    "tslint": "^5.15.0",
+    "tslint-consistent-codestyle": "^1.15.1",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.4.3"
+  },
+  "dependencies": {
+  }
+}
