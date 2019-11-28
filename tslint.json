@@ -8,7 +8,7 @@
       "tslint-eslint-rules"
     ],
     "rules": {
-      "quotemark": [true, "single"],
+      "quotemark": [true, "double"],
       "variable-name": false,
       "arrow-parens": false,
       "object-literal-key-quotes": false,
@@ -20,7 +20,8 @@
       "adjacent-overload-signatures": false,
       "no-bitwise": false,
       "interface-name": false,
-      "max-line-length": false
+      "max-line-length": false,
+      "no-misused-new": false
     },
     "linterOptions": {
       "exclude": [

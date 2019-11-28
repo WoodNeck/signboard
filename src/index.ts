@@ -1,4 +1,6 @@
-import signboard from './signboard';
+import LEDSignboard from "./signboards/LEDSignboard";
 
-export * from './types';
-export default signboard;
+export * from "./types";
+export {
+  LEDSignboard,
+};

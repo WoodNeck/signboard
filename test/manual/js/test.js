@@ -1,0 +1,1 @@
+const sb = new LEDSignboard()
