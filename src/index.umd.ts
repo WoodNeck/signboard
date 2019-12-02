@@ -1,3 +1,3 @@
-import LEDSignboard from "./signboards/LEDSignboard";
+import LEDSignboard from "./signboard/LEDSignboard";
 
 export default LEDSignboard;

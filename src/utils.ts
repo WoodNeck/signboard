@@ -1,4 +1,4 @@
-import { ELEMENT_NOT_FOUND, TYPE_ALLOWED_ONLY, WEBGL_NOT_AVAILABLE } from "./errors";
+import { ELEMENT_NOT_FOUND, TYPE_ALLOWED_ONLY, WEBGL_NOT_AVAILABLE } from "./constant/errors";
 
 // Initialize canvas element
 export function createCanvas(el: HTMLElement | string): HTMLCanvasElement {

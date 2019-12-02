@@ -1,4 +1,4 @@
-import LEDSignboard from "./signboards/LEDSignboard";
+import LEDSignboard from "./signboard/LEDSignboard";
 
 export * from "./types";
 export {
