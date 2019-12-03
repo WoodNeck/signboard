@@ -1,4 +1,4 @@
-import { LEDSignboardOptions, EntityProps, TextProps } from "../types";
+import { LEDSignboardOptions, EntityProps, TextProps } from "../type/external";
 
 export const LED_OPTIONS: LEDSignboardOptions = {
   pixelPitch: 3,
@@ -13,9 +13,10 @@ export const ENTITY_PROPS: EntityProps = {
 export const TEXT_PROPS: TextProps = {
   ...ENTITY_PROPS,
   text: "",
-  font: "16px serif",
   position: [0, 0],
+  // maxWidth's default is "undefined"
   stroke: false,
+  font: "16px serif",
   align: "start",
   baseline: "alphabetic",
   direction: "inherit",

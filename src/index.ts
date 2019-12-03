@@ -1,6 +1,8 @@
 import LEDSignboard from "./signboard/LEDSignboard";
+import Text from "./entity/Text";
 
-export * from "./types";
+export * from "./type/external";
 export {
   LEDSignboard,
+  Text,
 };

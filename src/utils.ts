@@ -1,4 +1,4 @@
-import { ELEMENT_NOT_FOUND, TYPE_ALLOWED_ONLY, WEBGL_NOT_AVAILABLE } from "./constant/errors";
+import ERROR from "./constant/error";
 
 // Initialize canvas element
 export function createCanvas(el: HTMLElement | string): HTMLCanvasElement {
@@ -7,13 +7,13 @@ export function createCanvas(el: HTMLElement | string): HTMLCanvasElement {
   if (typeof el === "string") {
     const queryResult = document.querySelector(el);
     if (!queryResult) {
-      throw new Error(ELEMENT_NOT_FOUND(el));
+      throw new Error(ERROR.ELEMENT_NOT_FOUND(el));
     }
     targetEl = queryResult as HTMLElement;
   } else if (el.nodeName) {
     targetEl = el;
   } else {
-    throw new Error(TYPE_ALLOWED_ONLY([HTMLElement, String]));
+    throw new Error(ERROR.TYPE_ALLOWED_ONLY([HTMLElement, String]));
   }
 
   if (targetEl.nodeName.toLowerCase() === "canvas") {
@@ -22,14 +22,29 @@ export function createCanvas(el: HTMLElement | string): HTMLCanvasElement {
   } else {
     // Given wrapper
     canvas = document.createElement("canvas");
+
+    // Set default styles
+    canvas.width = targetEl.offsetWidth;
+    canvas.height = targetEl.offsetHeight;
+    canvas.style.bottom = "0";
+    canvas.style.left = "0";
+    canvas.style.right = "0";
+    canvas.style.top = "0";
+    canvas.style.margin = "auto";
+    canvas.style.maxHeight = "100%";
+    canvas.style.maxWidth = "100%";
+    canvas.style.outline = "none";
+    canvas.style.position = "absolute";
+
     targetEl.appendChild(canvas);
   }
+
   return canvas;
 }
 
 export function getGLContext(canvas: HTMLCanvasElement, attribs?: WebGLContextAttributes): WebGLRenderingContext {
   if (!window.WebGLRenderingContext) {
-    throw new Error(WEBGL_NOT_AVAILABLE);
+    throw new Error(ERROR.WEBGL_NOT_AVAILABLE);
   }
 
   const webglIdentifiers = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
@@ -62,7 +77,7 @@ export function getGLContext(canvas: HTMLCanvasElement, attribs?: WebGLContextAt
   canvas.removeEventListener("webglcontextcreationerror", onWebglcontextcreationerror);
 
   if (!context) {
-    throw new Error(WEBGL_NOT_AVAILABLE);
+    throw new Error(ERROR.WEBGL_NOT_AVAILABLE);
   }
 
   return context;

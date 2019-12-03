@@ -1,5 +1,3 @@
-export type ValueOf<T> = T[keyof T];
-
 export interface LEDSignboardOptions {
   pixelPitch: number;
   ledSize: number;
@@ -16,6 +14,7 @@ export interface TextProps extends EntityProps {
   text: string;
   font: string;
   position: number[];
+  maxWidth?: number;
   stroke: boolean;
   align: CanvasTextAlign;
   baseline: CanvasTextBaseline;
