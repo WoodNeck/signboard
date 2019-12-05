@@ -82,3 +82,41 @@ export function getGLContext(canvas: HTMLCanvasElement, attribs?: WebGLContextAt
 
   return context;
 }
+
+export function createProgram(gl: WebGLRenderingContext, vsSource: string, fsSource: string) {
+  const program = gl.createProgram()!;
+  const vs = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+  const fs = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+
+  // Link
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+
+  // Cleanup
+  gl.detachShader(program, vs);
+  gl.detachShader(program, fs);
+  gl.deleteShader(vs);
+  gl.deleteShader(fs);
+
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    throw new Error(ERROR.PROGRAM_LINK_FAILED(gl.getProgramInfoLog(program)!));
+  }
+
+  return program;
+}
+
+export function loadShader(
+  gl: WebGLRenderingContext,
+  type: WebGLRenderingContextBase["VERTEX_SHADER"] | WebGLRenderingContextBase["FRAGMENT_SHADER"],
+  src: string,
+): WebGLShader {
+  const shader = gl.createShader(type)!;
+  gl.shaderSource(shader, src);
+  gl.compileShader(shader);
+
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.error(gl.getShaderInfoLog(shader));
+  }
+  return shader;
+}

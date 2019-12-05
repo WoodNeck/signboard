@@ -1,6 +1,7 @@
 import Entity from "../entity/Entity";
 import Renderer2D from "../renderer/Renderer2D";
 import Renderer3D from "../renderer/Renderer3D";
+import RoundPixelater from "../program/RoundPixelater";
 import { createCanvas } from "../utils";
 import { LEDSignboardOptions } from "../type/external";
 import * as DEFAULT from "../constant/default";
@@ -19,6 +20,7 @@ export default class LEDSignboard {
 
     this._renderer2D = new Renderer2D();
     this._renderer3D = new Renderer3D(this._canvas);
+    this._renderer3D.program = new RoundPixelater(this._renderer3D.context);
 
     this._options = Object.assign({...DEFAULT.LED_OPTIONS}, options);
     this._entities = [];
@@ -60,7 +62,6 @@ export default class LEDSignboard {
   public render(): void {
     this._beginRender();
     this._draw2D();
-    this._beginDraw3D();
     this._draw3D();
   }
 
@@ -92,15 +93,15 @@ export default class LEDSignboard {
     renderer2D.render(sortedEntities);
   }
 
-  private _beginDraw3D(): void {
-    const renderer2D = this._renderer2D;
-
-    // Get rendering result as a texture
-    const renderResult = renderer2D.result;
-  }
-
   private _draw3D(): void {
-    // Render to gl, then apply LED post process
+    // Get rendering result as a texture
+    const renderer3D = this._renderer3D;
+    const renderResult2D = this._renderer2D.result;
+
+    if (!renderer3D.program) return;
+
+    renderer3D.program.setTexture(0, renderResult2D);
+    renderer3D.render();
   }
 
   private _renderLoop = () => {
