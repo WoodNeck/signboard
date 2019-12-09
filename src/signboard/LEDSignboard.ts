@@ -101,6 +101,7 @@ export default class LEDSignboard {
     if (!renderer3D.program) return;
 
     renderer3D.program.setTexture(0, renderResult2D);
+    renderer3D.beginRender();
     renderer3D.render();
   }
 

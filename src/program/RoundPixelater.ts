@@ -3,15 +3,33 @@ import vsSource from "../shader/pass.vs";
 import fsSource from "../shader/round-pixelate.fs";
 import { createProgram } from "../utils";
 
+const vertices = new Float32Array([
+  -1, -1, 0,
+  1, -1, 0,
+  -1, 1, 0,
+  1, 1, 0,
+]);
+
+const indices = new Uint16Array([
+  0, 1, 2, 3,
+]);
+
 /**
  * Round pixelater program for rendering pixelated result
  */
 export default class RoundPixelater implements Program {
+  public readonly itemSize = 3;
+  public readonly itemCount = 4;
+  public readonly primitiveType = WebGLRenderingContext.TRIANGLE_STRIP;
+
   private _gl: WebGLRenderingContext;
   private _program: WebGLProgram;
   private _texture: WebGLTexture;
 
-  public get program(): WebGLProgram { return this._program; }
+  public get program() { return this._program; }
+  public get vertices() { return vertices; }
+  public get indices() { return indices; }
+  public get texcoords() { return vertices; }
 
   constructor(gl: WebGLRenderingContext) {
     this._gl = gl;
@@ -30,7 +48,9 @@ export default class RoundPixelater implements Program {
     gl.bindTexture(gl.TEXTURE_2D, null);
   }
 
-  public beforeRender() {
+  public update() {
+    if (!this._texture) return;
+
     const gl = this._gl;
 
     gl.activeTexture(gl.TEXTURE0);

@@ -1,1 +1,1 @@
-const sb = new LEDSignboard()
+const sb = new Signboard.LEDSignboard("#signboard");

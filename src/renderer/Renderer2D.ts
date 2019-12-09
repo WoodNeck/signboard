@@ -10,7 +10,7 @@ export default class Renderer2D implements Renderer {
   get result() { return this._context.getImageData(0 , 0, this._canvas.width, this._canvas.height); }
 
   constructor() {
-    this._canvas = new HTMLCanvasElement();
+    this._canvas = document.createElement("canvas");
     this._context = this.canvas.getContext("2d") as CanvasRenderingContext2D;
   }
 

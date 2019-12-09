@@ -3,11 +3,10 @@ const buildHelper = require("@egjs/build-helper");
 
 const name = "Signboard";
 const external = {}
-const plguins = [
-  glslify({
-    basedir: "./src/shader"
-  })
-]
+const plugins = [
+  glslify({ basedir: "./src/shader" })
+];
+
 export default buildHelper([
   {
     name,
@@ -15,7 +14,7 @@ export default buildHelper([
     output: "./lib/signboard.js",
     format: "umd",
     external,
-    plguins,
+    plugins,
   },
   {
     name,
@@ -24,7 +23,7 @@ export default buildHelper([
     format: "umd",
     uglify: true,
     external,
-    plguins,
+    plugins,
   },
   {
     name,
@@ -32,7 +31,7 @@ export default buildHelper([
     output: "./lib/signboard.pkgd.js",
     format: "umd",
     resolve: true,
-    plguins,
+    plugins,
   },
   {
     name,
@@ -41,7 +40,7 @@ export default buildHelper([
     format: "umd",
     resolve: true,
     uglify: true,
-    plguins,
+    plugins,
   },
   {
     input: "./src/index.ts",
@@ -49,6 +48,6 @@ export default buildHelper([
     format: "esm",
     external,
     exports: "named",
-    plguins,
+    plugins,
   },
 ]);
