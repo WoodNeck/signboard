@@ -1,4 +1,7 @@
-attribute vec3 aVPos;
+attribute vec4 aVPos;
+attribute vec4 aTCrd;
+varying vec4 vTCrd;
 void main() {
-  gl_Position = vec4(aVPos, 1.0);
+  gl_Position = aVPos;
+  vTCrd = aTCrd;
 }

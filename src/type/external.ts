@@ -13,6 +13,8 @@ export interface EntityProps {
 export interface TextProps extends EntityProps {
   text: string;
   font: string;
+  fillStyle: string;
+  strokeStyle: string;
   position: number[];
   maxWidth?: number;
   stroke: boolean;

@@ -1,31 +1,35 @@
 import ERROR from "./constant/error";
 
-// Initialize canvas element
-export function createCanvas(el: HTMLElement | string): HTMLCanvasElement {
-  let canvas: HTMLCanvasElement;
+export function getElement(el: HTMLElement | string): HTMLElement {
   let targetEl: HTMLElement;
+
   if (typeof el === "string") {
     const queryResult = document.querySelector(el);
     if (!queryResult) {
       throw new Error(ERROR.ELEMENT_NOT_FOUND(el));
     }
     targetEl = queryResult as HTMLElement;
-  } else if (el.nodeName) {
+  } else if (el.nodeName && el.nodeType === Node.ELEMENT_NODE) {
     targetEl = el;
   } else {
     throw new Error(ERROR.TYPE_ALLOWED_ONLY([HTMLElement, String]));
   }
 
-  if (targetEl.nodeName.toLowerCase() === "canvas") {
+  return targetEl;
+}
+
+// Initialize canvas element
+export function createCanvas(el: HTMLElement): HTMLCanvasElement {
+  let canvas: HTMLCanvasElement;
+
+  if (el.nodeName.toLowerCase() === "canvas") {
     // Given canvas
-    canvas = targetEl as HTMLCanvasElement;
+    canvas = el as HTMLCanvasElement;
   } else {
     // Given wrapper
     canvas = document.createElement("canvas");
 
     // Set default styles
-    canvas.width = targetEl.offsetWidth;
-    canvas.height = targetEl.offsetHeight;
     canvas.style.bottom = "0";
     canvas.style.left = "0";
     canvas.style.right = "0";
@@ -36,7 +40,7 @@ export function createCanvas(el: HTMLElement | string): HTMLCanvasElement {
     canvas.style.outline = "none";
     canvas.style.position = "absolute";
 
-    targetEl.appendChild(canvas);
+    el.appendChild(canvas);
   }
 
   return canvas;

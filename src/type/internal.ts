@@ -8,3 +8,7 @@ export interface EntityRenderingContext {
 export type Uniforms<T extends string> = {
   [K in T]?: WebGLUniformLocation
 };
+
+export type Attributes<T extends string> = {
+  [K in T]?: number
+};

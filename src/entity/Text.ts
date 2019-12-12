@@ -19,6 +19,8 @@ export default class Text extends Entity {
 
     preserve(["font", "textAlign", "textBaseline", "direction"], () => {
       context2D.font = props.font;
+      context2D.fillStyle = props.fillStyle;
+      context2D.strokeStyle = props.strokeStyle;
       context2D.textAlign = props.align;
       context2D.textBaseline = props.baseline;
       context2D.direction = props.direction;
@@ -26,9 +28,8 @@ export default class Text extends Entity {
       const draw = props.stroke
         ? context2D.strokeText
         : context2D.fillText;
-      draw.bind(context2D);
 
-      draw(props.text, props.position[0], props.position[1], props.maxWidth);
+      draw.call(context2D, props.text, props.position[0], props.position[1], props.maxWidth);
     });
   }
 }

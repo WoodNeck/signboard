@@ -3,6 +3,6 @@ import Text from "./entity/Text";
 
 export * from "./type/external";
 export {
-  LEDSignboard as default,
+  LEDSignboard,
   Text,
 };

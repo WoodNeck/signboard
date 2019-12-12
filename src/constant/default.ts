@@ -17,6 +17,8 @@ export const TEXT_PROPS: TextProps = {
   // maxWidth's default is "undefined"
   stroke: false,
   font: "16px serif",
+  fillStyle: "black",
+  strokeStyle: "black",
   align: "start",
   baseline: "alphabetic",
   direction: "inherit",
