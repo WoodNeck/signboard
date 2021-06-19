@@ -1,3 +1,3 @@
-import signboard from './signboard';
+import signboard from './SignBoard';
 
 export default signboard;

@@ -6,3 +6,6 @@
 
 ## 📜 License
 [MIT](https://github.com/WoodNeck/signboard.js/blob/master/LICENSE)
+
+## Browser Coverage
+- IE11+ with Promise polyfill

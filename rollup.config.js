@@ -1,7 +1,10 @@
+const glslify = require("rollup-plugin-glslify");
 const buildHelper = require("@egjs/build-helper");
 
 const name = "Signboard";
 const external = {}
+const plugins = [glslify()];
+
 export default buildHelper([
   {
     name,
@@ -9,6 +12,7 @@ export default buildHelper([
     output: "./lib/signboard.js",
     format: "umd",
     external,
+    plugins
   },
   {
     name,
@@ -17,6 +21,7 @@ export default buildHelper([
     format: "umd",
     uglify: true,
     external,
+    plugins
   },
   {
     name,
@@ -24,6 +29,7 @@ export default buildHelper([
     output: "./lib/signboard.pkgd.js",
     format: "umd",
     resolve: true,
+    plugins
   },
   {
     name,
@@ -32,6 +38,7 @@ export default buildHelper([
     format: "umd",
     resolve: true,
     uglify: true,
+    plugins
   },
   {
     input: "./src/index.ts",
@@ -39,5 +46,6 @@ export default buildHelper([
     format: "esm",
     external,
     exports: "named",
+    plugins
   },
 ]);
