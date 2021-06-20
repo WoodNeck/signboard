@@ -11,8 +11,8 @@
  * @property {number} FAILED_COMPILE_PROGRAM 5
  * @property {number} FAILED_TO_LOAD_IMAGE 6
  */
-export const CODES: {
-  [key in keyof typeof MESSAGES]: number;
+export const CODE: {
+  [key in keyof typeof MESSAGE]: number;
 } = {
   WRONG_TYPE: 0,
   ELEMENT_NOT_FOUND: 1,
@@ -23,7 +23,7 @@ export const CODES: {
   FAILED_TO_LOAD_IMAGE: 6
 };
 
-export const MESSAGES = {
+export const MESSAGE = {
   WRONG_TYPE: (val: any, types: string[]) => `${typeof val} is not a ${types.map(type => `"${type}"`).join(" or ")}.`,
   ELEMENT_NOT_FOUND: (query: string) => `Element with selector "${query}" not found.`,
   ELEMENT_NOT_CANVAS: (el: HTMLElement) => `Given element <${el.tagName}> is not a canvas.`,

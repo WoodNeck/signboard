@@ -9,7 +9,7 @@ export function getElement(el: HTMLElement | string | null): HTMLElement | null 
   if (typeof el === "string") {
     const queryResult = document.querySelector(el);
     if (!queryResult) {
-      throw new SignBoardError(ERROR.MESSAGES.ELEMENT_NOT_FOUND(el), ERROR.CODES.ELEMENT_NOT_FOUND);
+      throw new SignBoardError(ERROR.MESSAGE.ELEMENT_NOT_FOUND(el), ERROR.CODE.ELEMENT_NOT_FOUND);
     }
     targetEl = queryResult as HTMLElement;
   } else if (el && el.nodeType === Node.ELEMENT_NODE) {
@@ -23,11 +23,11 @@ export const getCanvas = (el: HTMLElement | string): HTMLCanvasElement => {
   const targetEl = getElement(el);
 
   if (!targetEl) {
-    throw new SignBoardError(ERROR.MESSAGES.WRONG_TYPE(el, ["HTMLElement", "string"]), ERROR.CODES.WRONG_TYPE);
+    throw new SignBoardError(ERROR.MESSAGE.WRONG_TYPE(el, ["HTMLElement", "string"]), ERROR.CODE.WRONG_TYPE);
   }
 
   if (!/^canvas$/i.test(targetEl.tagName)) {
-    throw new SignBoardError(ERROR.MESSAGES.ELEMENT_NOT_CANVAS(targetEl), ERROR.CODES.ELEMENT_NOT_CANVAS);
+    throw new SignBoardError(ERROR.MESSAGE.ELEMENT_NOT_CANVAS(targetEl), ERROR.CODE.ELEMENT_NOT_CANVAS);
   }
 
   return targetEl as HTMLCanvasElement;
@@ -46,7 +46,7 @@ export const getWebGLContext = (canvas: HTMLCanvasElement): WebGLRenderingContex
   context = canvas.getContext("webgl", contextAttributes) as WebGLRenderingContext;
   canvas.removeEventListener(EVENT.BROWSER.WEBGL_CONTEXT_CREATION_ERROR, onWebGLContextCreationError);
 
-  if (!context) throw new SignBoardError(ERROR.MESSAGES.WEBGL_NOT_SUPPORTED(reason), ERROR.CODES.WEBGL_NOT_SUPPORTED);
+  if (!context) throw new SignBoardError(ERROR.MESSAGE.WEBGL_NOT_SUPPORTED(reason), ERROR.CODE.WEBGL_NOT_SUPPORTED);
 
   canvas.addEventListener("webglcontextlost", e => {
     console.log("contextlost");

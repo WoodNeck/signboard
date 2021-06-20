@@ -6,7 +6,7 @@ import * as ATTRIBUTE from "../const/attribute";
 import * as ERROR from "../const/error";
 import { getWebGLContext } from "../utils";
 
-interface RendererOptions {
+export interface RendererOptions {
   frameRate: number;
   tileSize: number;
   emission: number;
@@ -166,7 +166,7 @@ class Renderer {
     gl.compileShader(shader);
 
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      throw new SignBoardError(ERROR.MESSAGES.FAILED_COMPILE_SHADER(gl.getShaderInfoLog(shader)), ERROR.CODES.FAILED_COMPILE_SHADER);
+      throw new SignBoardError(ERROR.MESSAGE.FAILED_COMPILE_SHADER(gl.getShaderInfoLog(shader)), ERROR.CODE.FAILED_COMPILE_SHADER);
     }
 
     return shader;
@@ -184,7 +184,7 @@ class Renderer {
     gl.linkProgram(program);
 
     if (!gl.getProgramParameter( program, gl.LINK_STATUS)) {
-      throw new SignBoardError(ERROR.MESSAGES.FAILED_COMPILE_PROGRAM(gl.getProgramInfoLog(program)), ERROR.CODES.FAILED_COMPILE_PROGRAM);
+      throw new SignBoardError(ERROR.MESSAGE.FAILED_COMPILE_PROGRAM(gl.getProgramInfoLog(program)), ERROR.CODE.FAILED_COMPILE_PROGRAM);
     }
 
     return program;

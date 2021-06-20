@@ -34,7 +34,7 @@ class TextureLoader {
         resolve(new ImageTexture(image));
       });
       image.addEventListener(BROWSER.ERROR, () => {
-        reject(new SignBoardError(ERROR.MESSAGES.FAILED_TO_LOAD_IMAGE(src), ERROR.CODES.FAILED_TO_LOAD_IMAGE));
+        reject(new SignBoardError(ERROR.MESSAGE.FAILED_TO_LOAD_IMAGE(src), ERROR.CODE.FAILED_TO_LOAD_IMAGE));
       });
 
       image.crossOrigin = "anonymous";
@@ -51,7 +51,7 @@ class TextureLoader {
         resolve(new VideoTexture(video));
       });
       video.addEventListener(BROWSER.ERROR, () => {
-        reject(new SignBoardError(ERROR.MESSAGES.FAILED_TO_LOAD_IMAGE(src), ERROR.CODES.FAILED_TO_LOAD_IMAGE));
+        reject(new SignBoardError(ERROR.MESSAGE.FAILED_TO_LOAD_IMAGE(src), ERROR.CODE.FAILED_TO_LOAD_IMAGE));
       });
 
       video.loop = true;

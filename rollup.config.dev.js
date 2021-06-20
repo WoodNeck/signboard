@@ -6,7 +6,7 @@ export default buildHelper([
   {
     name: "SignBoard",
     input: "./src/index.umd.ts",
-    output: "./lib/signboard.pkgd.js",
+    output: "./lib/signboard.js",
     format: "umd",
     resolve: true,
     plugins

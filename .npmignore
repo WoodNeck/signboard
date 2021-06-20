@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/
+test/
+
+.editorconfig
+.eslintrc.js
+jsdoc.json\
+rollup.config.js
+rollup.config.dev.js
+tsconfig.json
+tsconfig.declaration.json
