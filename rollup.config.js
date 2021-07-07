@@ -1,7 +1,7 @@
 const glslify = require("rollup-plugin-glslify");
 const buildHelper = require("@egjs/build-helper");
 
-const name = "Signboard";
+const name = "SignBoard";
 const external = {}
 const plugins = [glslify()];
 

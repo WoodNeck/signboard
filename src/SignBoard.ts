@@ -1,12 +1,19 @@
 import Renderer from "./core/Renderer";
 import TextureLoader from "./core/TextureLoader";
+import { Texture } from "./texture";
 import { BROWSER } from "./const/event";
 import { getCanvas } from "./utils";
 import { CONTENT_TYPE } from "./const/external";
 import { ValueOf } from "./types";
 
 /**
- *
+ * @interface
+ * @param {"image" | "video"} [contentType="image"]
+ * @param {number} [frameRate=60]
+ * @param {boolean} [autoResize=true]
+ * @param {number} [tileSize=8]
+ * @param {number} [emission=1]
+ * @param {number} [bulbSize=0.7]
  */
 interface SignBoardOptions {
   contentType: ValueOf<typeof CONTENT_TYPE>;
@@ -19,6 +26,7 @@ interface SignBoardOptions {
 
 class SignBoard {
   private _renderer: Renderer;
+  private _texture: Texture | null;
   private _src: string;
   private _initialized: boolean;
 
@@ -31,6 +39,7 @@ class SignBoard {
   public get initialized() { return this._initialized; }
 
   // Options
+  public get texture() { return this._texture; }
   public get contentType() { return this._contentType; }
   public set contentType(val: ValueOf<typeof CONTENT_TYPE>) { this._contentType = val; }
   public get frameRate() { return this._renderer.frameRate; }
@@ -44,7 +53,7 @@ class SignBoard {
    *
    * @param {string|HTMLElement} canvas CSS query selector or canvas element
    * @param {string} src Source URL to the image / video
-   * @param {SignBoardOptions} options Options for signboard.js
+   * @param {SignBoardOptions} options An options object
    */
   public constructor(canvas: string | HTMLElement, src: string, {
     contentType = CONTENT_TYPE.IMAGE,
@@ -62,6 +71,7 @@ class SignBoard {
       bulbSize
     });
     this._src = src;
+    this._texture = null;
 
     // Internal States
     this._initialized = false;
@@ -80,6 +90,7 @@ class SignBoard {
     const textureLoader = new TextureLoader(this._src, this._contentType);
 
     const texture = await textureLoader.load();
+    this._texture = texture;
 
     renderer.resize();
     renderer.init();
@@ -88,6 +99,7 @@ class SignBoard {
     if (this._contentType === CONTENT_TYPE.VIDEO) {
       renderer.start();
     } else {
+      // Render single frame
       renderer.render();
     }
 
