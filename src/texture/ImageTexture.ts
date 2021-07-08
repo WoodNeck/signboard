@@ -1,6 +1,13 @@
-class ImageTexture {
+import Texture from "./Texture";
+
+class ImageTexture implements Texture {
   private _image: HTMLImageElement;
   private _texture: WebGLTexture | null;
+
+  public get size() { return {
+    width: this._image.naturalWidth,
+    height: this._image.naturalHeight
+  }}
 
   public constructor(image: HTMLImageElement) {
     this._image = image;

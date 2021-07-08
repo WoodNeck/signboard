@@ -6,6 +6,8 @@ uniform float uInvTileSize;
 uniform vec2 uResolution;
 uniform float uEmission;
 uniform float uBulbSize;
+uniform vec2 uTexOffset;
+uniform vec2 uTexScale;
 uniform sampler2D uTexture;
 
 float sstep(float edge0, float edge1, float x) {
@@ -25,5 +27,9 @@ void main() {
   float dist = distToCenter.x + distToCenter.y;
   float dissipation = 1.0 - sstep(0.0, uBulbSize * uBulbSize, dist * dist);
 
-  gl_FragColor = texture2D(uTexture, tileCenter) * dissipation * uEmission;
+  vec2 texUV = (tileCenter - uTexOffset) * uTexScale;
+  vec2 inBorderUV = step(vec2(0.0), texUV) * step(texUV, vec2(1.0));
+  float inBorder = step(2.0, inBorderUV.x + inBorderUV.y);
+
+  gl_FragColor = texture2D(uTexture, texUV) * dissipation * uEmission * inBorder;
 }

@@ -3,7 +3,7 @@ import TextureLoader from "./core/TextureLoader";
 import { Texture } from "./texture";
 import { BROWSER } from "./const/event";
 import { getCanvas } from "./utils";
-import { CONTENT_TYPE } from "./const/external";
+import { CONTENT_TYPE, OBJECT_FIT } from "./const/external";
 import { ValueOf } from "./types";
 
 /**
@@ -14,14 +14,17 @@ import { ValueOf } from "./types";
  * @param {number} [tileSize=8]
  * @param {number} [emission=1]
  * @param {number} [bulbSize=0.7]
+ * @param {string} [objectFit="fill"]
  */
 interface SignBoardOptions {
   contentType: ValueOf<typeof CONTENT_TYPE>;
   frameRate: number;
-  autoResize: boolean;
   tileSize: number;
   emission: number;
   bulbSize: number;
+  objectFit: ValueOf<typeof OBJECT_FIT>;
+  autoResize: boolean;
+  autoInit: boolean;
 }
 
 class SignBoard {
@@ -33,24 +36,28 @@ class SignBoard {
   // Options
   private _contentType: ValueOf<typeof CONTENT_TYPE>;
   private _autoResize: boolean;
+  private _autoInit: boolean;
 
   public get renderer() { return this._renderer; }
   public get src() { return this._src; }
   public get initialized() { return this._initialized; }
+  public get texture() { return this._texture; }
 
   // Options
-  public get texture() { return this._texture; }
   public get contentType() { return this._contentType; }
-  public set contentType(val: ValueOf<typeof CONTENT_TYPE>) { this._contentType = val; }
+  public set contentType(val: SignBoardOptions["contentType"]) { this._contentType = val; }
   public get frameRate() { return this._renderer.frameRate; }
   public set frameRate(val: number) { this._renderer.frameRate = val; }
   public get tileSize() { return this._renderer.tileSize; }
   public set tileSize(val: number) { this._renderer.tileSize = val; }
+  public get objectFit() { return this._renderer.objectFit; }
+  public set objectFit(val: SignBoardOptions["objectFit"]) { this._renderer.objectFit = val; }
   public get autoResize() { return this._autoResize; }
   public set autoResize(val: boolean) { this._updateAutoResize(val); }
+  public get autoInit() { return this._autoInit; }
+  public set autoInit(val: boolean) { this._autoInit = val; }
 
   /**
-   *
    * @param {string|HTMLElement} canvas CSS query selector or canvas element
    * @param {string} src Source URL to the image / video
    * @param {SignBoardOptions} options An options object
@@ -58,17 +65,20 @@ class SignBoard {
   public constructor(canvas: string | HTMLElement, src: string, {
     contentType = CONTENT_TYPE.IMAGE,
     frameRate = 60,
-    autoResize = true,
     tileSize = 8,
-    emission = 1,
-    bulbSize = 0.7
+    emission = 1.5,
+    bulbSize = 0.7,
+    objectFit = OBJECT_FIT.FILL,
+    autoResize = true,
+    autoInit = true
   }: Partial<SignBoardOptions> = {}) {
     // Core components
     this._renderer = new Renderer(getCanvas(canvas), {
       frameRate,
       tileSize,
       emission,
-      bulbSize
+      bulbSize,
+      objectFit
     });
     this._src = src;
     this._texture = null;
@@ -79,6 +89,7 @@ class SignBoard {
     // Bind options
     this._contentType = contentType
     this._autoResize = autoResize;
+    this._autoInit = autoInit;
 
     this.resize = this.resize.bind(this);
 
@@ -96,12 +107,7 @@ class SignBoard {
     renderer.init();
     renderer.setTexture(texture);
 
-    if (this._contentType === CONTENT_TYPE.VIDEO) {
-      renderer.start();
-    } else {
-      // Render single frame
-      renderer.render();
-    }
+    this.render();
 
     if (this._autoResize) {
       this._autoResize = false;
@@ -115,6 +121,17 @@ class SignBoard {
 
     renderer.resize();
     renderer.render();
+  }
+
+  public render() {
+    const renderer = this._renderer;
+
+    if (this._contentType === CONTENT_TYPE.VIDEO) {
+      renderer.start();
+    } else {
+      // Render single frame
+      renderer.render();
+    }
   }
 
   private _updateAutoResize(newVal: boolean) {

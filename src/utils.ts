@@ -1,7 +1,8 @@
 import SignBoardError from "./core/SignBoardError";
 import * as EVENT from "./const/event";
 import * as ERROR from "./const/error";
-import { Merged } from "./types";
+import { Merged, ValueOf } from "./types";
+import { OBJECT_FIT } from "./const/options";
 
 export function getElement(el: HTMLElement | string | null): HTMLElement | null {
   let targetEl: HTMLElement | null = null;
@@ -65,3 +66,54 @@ export const merge = <From extends {[key: string]: any}, To extends {[key: strin
 
   return target as Merged<From, To>;
 };
+
+export const getSubImage = (
+  contentSize: { width: number; height: number },
+  renderingSize: { width: number; height: number },
+  objectFit: ValueOf<typeof OBJECT_FIT>
+): { x: number; y: number; width: number; height: number } => {
+  switch (objectFit) {
+    case OBJECT_FIT.FILL: {
+      return { x: 0, y: 0, ...renderingSize }
+    }
+    case OBJECT_FIT.CONTAIN: {
+      const xScale = renderingSize.width / contentSize.width;
+      const yScale = renderingSize.height / contentSize.height;
+
+      if (xScale >= yScale) {
+        const newWidth = contentSize.width * yScale
+        return { x: (renderingSize.width - newWidth) / 2, y: 0, width: newWidth, height: renderingSize.height };
+      } else {
+        const newHeight = contentSize.height * xScale;
+        return { x: 0, y: (renderingSize.height - newHeight) / 2, width: renderingSize.width, height: newHeight };
+      }
+    }
+    case OBJECT_FIT.COVER: {
+      const xScale = renderingSize.width / contentSize.width;
+      const yScale = renderingSize.height / contentSize.height;
+
+      if (xScale >= yScale) {
+        const newHeight = contentSize.height * xScale;
+        return { x: 0, y: (renderingSize.height - newHeight) / 2, width: renderingSize.width, height: newHeight };
+      } else {
+        const newWidth = contentSize.width * yScale
+        return { x: (renderingSize.width - newWidth) / 2, y: 0, width: newWidth, height: renderingSize.height };
+      }
+    }
+    case OBJECT_FIT.NONE: {
+      return { x: (renderingSize.width - contentSize.width) / 2, y: (renderingSize.height - contentSize.height) / 2, ...contentSize };
+    }
+    case OBJECT_FIT.SCALE_DOWN: {
+      if (contentSize.width > renderingSize.width || contentSize.height > renderingSize.height) {
+        return getSubImage(contentSize, renderingSize, OBJECT_FIT.CONTAIN);
+      } else {
+        return getSubImage(contentSize, renderingSize, OBJECT_FIT.NONE);
+      }
+    }
+    default:
+      throw new SignBoardError(
+        ERROR.MESSAGE.WRONG_OPTION(objectFit, "objectFit", Object.keys(OBJECT_FIT).map(key => OBJECT_FIT[key as keyof typeof OBJECT_FIT])),
+        ERROR.CODE.WRONG_OPTION
+      )
+  }
+}

@@ -1,4 +1,7 @@
-const signboard = new SignBoard("#test", "./video/Astronaut.mp4", { contentType: "video" })
+const signboard = new SignBoard("#test", "./video/Astronaut2.mp4", {
+  contentType: "video",
+  objectFit: "contain"
+});
 
 const gui = new dat.GUI({ name: "Controls" });
 

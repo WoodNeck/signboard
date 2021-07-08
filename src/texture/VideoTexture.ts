@@ -1,6 +1,13 @@
-class VideoTexture {
+import Texture from "./Texture";
+
+class VideoTexture implements Texture {
   private _video: HTMLVideoElement;
   private _texture: WebGLTexture | null;
+
+  public get size() { return {
+    width: this._video.videoWidth,
+    height: this._video.videoHeight
+  }}
 
   public constructor(video: HTMLVideoElement) {
     this._video = video;
