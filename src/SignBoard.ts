@@ -12,7 +12,8 @@ import { ValueOf } from "./types";
  * @param {number} [frameRate=60]
  * @param {boolean} [autoResize=true]
  * @param {number} [tileSize=8]
- * @param {number} [emission=1]
+ * @param {number} [emission=1.5]
+ * @param {number} [dissipation=0.5]
  * @param {number} [bulbSize=0.7]
  * @param {string} [objectFit="fill"]
  */
@@ -21,6 +22,7 @@ interface SignBoardOptions {
   frameRate: number;
   tileSize: number;
   emission: number;
+  dissipation: number;
   bulbSize: number;
   objectFit: ValueOf<typeof OBJECT_FIT>;
   autoResize: boolean;
@@ -67,6 +69,7 @@ class SignBoard {
     frameRate = 60,
     tileSize = 8,
     emission = 1.5,
+    dissipation = 0.5,
     bulbSize = 0.7,
     objectFit = OBJECT_FIT.FILL,
     autoResize = true,
@@ -77,6 +80,7 @@ class SignBoard {
       frameRate,
       tileSize,
       emission,
+      dissipation,
       bulbSize,
       objectFit
     });
@@ -107,7 +111,7 @@ class SignBoard {
     renderer.init();
     renderer.setTexture(texture);
 
-    this.render();
+    this.start();
 
     if (this._autoResize) {
       this._autoResize = false;
@@ -123,7 +127,7 @@ class SignBoard {
     renderer.render();
   }
 
-  public render() {
+  public start() {
     const renderer = this._renderer;
 
     if (this._contentType === CONTENT_TYPE.VIDEO) {
@@ -132,6 +136,10 @@ class SignBoard {
       // Render single frame
       renderer.render();
     }
+  }
+
+  public stop() {
+
   }
 
   private _updateAutoResize(newVal: boolean) {

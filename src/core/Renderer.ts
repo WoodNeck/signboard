@@ -12,6 +12,7 @@ export interface RendererOptions {
   frameRate: number;
   tileSize: number;
   emission: number;
+  dissipation: number;
   bulbSize: number;
   objectFit: ValueOf<typeof OBJECT_FIT>;
 }
@@ -24,6 +25,7 @@ class Renderer {
     uInvTileSize: WebGLUniformLocation | null,
     uResolution: WebGLUniformLocation | null,
     uEmission: WebGLUniformLocation | null,
+    uDissipation: WebGLUniformLocation | null,
     uBulbSize: WebGLUniformLocation | null,
     uTexOffset: WebGLUniformLocation | null,
     uTexScale: WebGLUniformLocation | null
@@ -36,6 +38,7 @@ class Renderer {
   private _frameRate: number;
   private _tileSize: number;
   private _emission: number;
+  private _dissipation: number;
   private _bulbSize: number;
   private _objectFit: ValueOf<typeof OBJECT_FIT>;
 
@@ -56,6 +59,12 @@ class Renderer {
     this._updateUniforms();
     this.render();
   }
+  public get dissipation() { return this._dissipation; }
+  public set dissipation(val: number) {
+    this._dissipation = val;
+    this._updateUniforms();
+    this.render();
+  }
   public get bulbSize() { return this._bulbSize; }
   public set bulbSize(val: number) {
     this._bulbSize = val;
@@ -73,6 +82,7 @@ class Renderer {
     frameRate,
     tileSize,
     emission,
+    dissipation,
     bulbSize,
     objectFit
   }: RendererOptions) {
@@ -86,6 +96,7 @@ class Renderer {
       uInvTileSize: null,
       uResolution: null,
       uEmission: null,
+      uDissipation: null,
       uBulbSize: null,
       uTexOffset: null,
       uTexScale: null
@@ -95,6 +106,7 @@ class Renderer {
     this._frameRate = frameRate;
     this._tileSize = tileSize;
     this._emission = emission;
+    this._dissipation = dissipation;
     this._bulbSize = bulbSize;
     this._objectFit = objectFit;
   }
@@ -238,6 +250,7 @@ class Renderer {
       uInvTileSize: gl.getUniformLocation(program, "uInvTileSize"),
       uResolution: gl.getUniformLocation(program, "uResolution"),
       uEmission: gl.getUniformLocation(program, "uEmission"),
+      uDissipation: gl.getUniformLocation(program, "uDissipation"),
       uBulbSize: gl.getUniformLocation(program, "uBulbSize"),
       uTexOffset: gl.getUniformLocation(program, "uTexOffset"),
       uTexScale: gl.getUniformLocation(program, "uTexScale")
@@ -254,6 +267,7 @@ class Renderer {
     gl.uniform1f(uniforms.uInvTileSize, 1 / this._tileSize);
     gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
     gl.uniform1f(uniforms.uEmission, this._emission);
+    gl.uniform1f(uniforms.uDissipation, 1 / this._dissipation);
     gl.uniform1f(uniforms.uBulbSize, this._bulbSize);
 
     if (this._texture) {
