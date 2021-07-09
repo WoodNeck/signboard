@@ -1,19 +1,22 @@
 import SignBoardError from "./SignBoardError";
+import { SignBoardOptions } from "../SignBoard";
 import * as ERROR from "../const/error";
 import { BROWSER } from "../const/event";
 import { CONTENT_TYPE } from "../const/external";
-import { ValueOf } from "../types";
 import Texture from "../texture/Texture";
 import ImageTexture from "../texture/ImageTexture";
 import VideoTexture from "../texture/VideoTexture";
+import { Attributes } from "../types";
 
 class TextureLoader {
   private _src: string;
-  private _type: ValueOf<typeof CONTENT_TYPE>;
+  private _type: SignBoardOptions["contentType"];
+  private _attribs: SignBoardOptions["contentAttribs"];
 
-  public constructor(src: string, type: ValueOf<typeof CONTENT_TYPE>) {
+  public constructor(src: string, type: SignBoardOptions["contentType"], attribs: SignBoardOptions["contentAttribs"]) {
     this._src = src;
     this._type = type;
+    this._attribs = attribs;
   }
 
   public async load(): Promise<Texture> {
@@ -37,7 +40,15 @@ class TextureLoader {
         reject(new SignBoardError(ERROR.MESSAGE.FAILED_TO_LOAD_IMAGE(src), ERROR.CODE.FAILED_TO_LOAD_IMAGE));
       });
 
-      image.crossOrigin = "anonymous";
+      const attribs = {
+        crossOrigin: "anonymous",
+        ...this._attribs
+      } as Attributes<HTMLImageElement>;
+
+      for (const key in attribs) {
+        (image as any)[key] = (attribs as any)[key];
+      }
+
       image.src = src;
     });
   }
@@ -54,11 +65,19 @@ class TextureLoader {
         reject(new SignBoardError(ERROR.MESSAGE.FAILED_TO_LOAD_IMAGE(src), ERROR.CODE.FAILED_TO_LOAD_IMAGE));
       });
 
-      video.loop = true;
-      video.playsInline = true;
-      video.crossOrigin = "anonymous";
+      const attribs = {
+        loop: true,
+        playsInline: true,
+        autoplay: true,
+        crossOrigin: "anonymous",
+        ...this._attribs
+      } as Attributes<HTMLVideoElement>;
+
+      for (const key in attribs) {
+        (video as any)[key] = (attribs as any)[key];
+      }
+
       video.src = src;
-      video.load();
     });
   }
 }

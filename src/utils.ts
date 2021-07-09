@@ -44,7 +44,7 @@ export const getWebGLContext = (canvas: HTMLCanvasElement): WebGLRenderingContex
   }
 
   canvas.addEventListener(EVENT.BROWSER.WEBGL_CONTEXT_CREATION_ERROR, onWebGLContextCreationError);
-  context = canvas.getContext("webgl", contextAttributes) as WebGLRenderingContext;
+  context = canvas.getContext("webgl", contextAttributes) || canvas.getContext("experimental-webgl") as WebGLRenderingContext;
   canvas.removeEventListener(EVENT.BROWSER.WEBGL_CONTEXT_CREATION_ERROR, onWebGLContextCreationError);
 
   if (!context) throw new SignBoardError(ERROR.MESSAGE.WEBGL_NOT_SUPPORTED(reason), ERROR.CODE.WEBGL_NOT_SUPPORTED);

@@ -3,7 +3,7 @@ import Texture from "../texture/Texture";
 import signboardVS from "../shader/signboard.vert";
 import signboardFS from "../shader/signboard.frag";
 import { OBJECT_FIT } from "../const/options";
-import * as ATTRIBUTE from "../const/attribute";
+import * as VERTEX from "../const/vertex";
 import * as ERROR from "../const/error";
 import { getSubImage, getWebGLContext } from "../utils";
 import { ValueOf } from "../types";
@@ -234,26 +234,21 @@ class Renderer {
 
     gl.enableVertexAttribArray(positionLocation);
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, ATTRIBUTE.POSITION, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, VERTEX.POSITION, gl.STATIC_DRAW);
     gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
     gl.enableVertexAttribArray(texcoordLocation);
     gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, ATTRIBUTE.TEX_COORD, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, VERTEX.TEX_COORD, gl.STATIC_DRAW);
     gl.vertexAttribPointer(texcoordLocation, 2, gl.FLOAT, false, 0, 0);
   }
 
   private _bindUniforms(program: WebGLProgram) {
     const gl = this._gl;
+    const uniforms = this._uniforms;
 
-    this._uniforms = {
-      uInvTileSize: gl.getUniformLocation(program, "uInvTileSize"),
-      uResolution: gl.getUniformLocation(program, "uResolution"),
-      uEmission: gl.getUniformLocation(program, "uEmission"),
-      uDissipation: gl.getUniformLocation(program, "uDissipation"),
-      uBulbSize: gl.getUniformLocation(program, "uBulbSize"),
-      uTexOffset: gl.getUniformLocation(program, "uTexOffset"),
-      uTexScale: gl.getUniformLocation(program, "uTexScale")
+    for (const key in uniforms) {
+      uniforms[key as keyof typeof uniforms] = gl.getUniformLocation(program, key);
     }
   }
 

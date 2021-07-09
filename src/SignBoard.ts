@@ -4,11 +4,12 @@ import { Texture } from "./texture";
 import { BROWSER } from "./const/event";
 import { getCanvas } from "./utils";
 import { CONTENT_TYPE, OBJECT_FIT } from "./const/external";
-import { ValueOf } from "./types";
+import { Attributes, ValueOf } from "./types";
 
 /**
  * @interface
  * @param {"image" | "video"} [contentType="image"]
+ * @param {object} [contentAttribs={}]
  * @param {number} [frameRate=60]
  * @param {boolean} [autoResize=true]
  * @param {number} [tileSize=8]
@@ -17,8 +18,9 @@ import { ValueOf } from "./types";
  * @param {number} [bulbSize=0.7]
  * @param {string} [objectFit="fill"]
  */
-interface SignBoardOptions {
+export interface SignBoardOptions {
   contentType: ValueOf<typeof CONTENT_TYPE>;
+  contentAttribs: Partial<Attributes<HTMLImageElement> | Attributes<HTMLMediaElement>>;
   frameRate: number;
   tileSize: number;
   emission: number;
@@ -36,7 +38,8 @@ class SignBoard {
   private _initialized: boolean;
 
   // Options
-  private _contentType: ValueOf<typeof CONTENT_TYPE>;
+  private _contentType: SignBoardOptions["contentType"];
+  private _contentAttribs: SignBoardOptions["contentAttribs"];
   private _autoResize: boolean;
   private _autoInit: boolean;
 
@@ -66,6 +69,7 @@ class SignBoard {
    */
   public constructor(canvas: string | HTMLElement, src: string, {
     contentType = CONTENT_TYPE.IMAGE,
+    contentAttribs = {},
     frameRate = 60,
     tileSize = 8,
     emission = 1.5,
@@ -91,7 +95,8 @@ class SignBoard {
     this._initialized = false;
 
     // Bind options
-    this._contentType = contentType
+    this._contentType = contentType;
+    this._contentAttribs = contentAttribs;
     this._autoResize = autoResize;
     this._autoInit = autoInit;
 
@@ -102,7 +107,7 @@ class SignBoard {
 
   public async init() {
     const renderer = this._renderer;
-    const textureLoader = new TextureLoader(this._src, this._contentType);
+    const textureLoader = new TextureLoader(this._src, this._contentType, this._contentAttribs);
 
     const texture = await textureLoader.load();
     this._texture = texture;
