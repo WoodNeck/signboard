@@ -1,23 +1,14 @@
 import SignBoardError from "./SignBoardError";
+import SignBoard from "../SignBoard";
 import Texture from "../texture/Texture";
 import signboardVS from "../shader/signboard.vert";
 import signboardFS from "../shader/signboard.frag";
-import { OBJECT_FIT } from "../const/options";
 import * as VERTEX from "../const/vertex";
 import * as ERROR from "../const/error";
 import { getSubImage, getWebGLContext } from "../utils";
-import { ValueOf } from "../types";
-
-export interface RendererOptions {
-  frameRate: number;
-  tileSize: number;
-  emission: number;
-  dissipation: number;
-  bulbSize: number;
-  objectFit: ValueOf<typeof OBJECT_FIT>;
-}
 
 class Renderer {
+  private _signboard: SignBoard;
   private _canvas: HTMLCanvasElement;
   private _gl: WebGLRenderingContext;
   private _program: WebGLProgram | null;
@@ -28,70 +19,29 @@ class Renderer {
     uDissipation: WebGLUniformLocation | null,
     uBulbSize: WebGLUniformLocation | null,
     uTexOffset: WebGLUniformLocation | null,
-    uTexScale: WebGLUniformLocation | null
+    uTexScale: WebGLUniformLocation | null,
+    uScrollOffset: WebGLUniformLocation | null
   }
   private _texture: Texture | null;
   private _lastRenderTime: number;
   private _animationID: number;
+  private _prevScroll: number;
+
+  public get animating() { return this._animationID >= 0; }
 
   // Options
-  private _frameRate: number;
-  private _tileSize: number;
-  private _emission: number;
-  private _dissipation: number;
-  private _bulbSize: number;
-  private _objectFit: ValueOf<typeof OBJECT_FIT>;
-
   public get canvas() { return this._canvas; }
   public get gl() { return this._gl; }
 
-  public get frameRate() { return this._frameRate; }
-  public set frameRate(val: number) { this._frameRate = val; }
-  public get tileSize() { return this._tileSize; }
-  public set tileSize(val: number) {
-    this._tileSize = val;
-    this._updateUniforms();
-    this.render();
-  }
-  public get emission() { return this._emission; }
-  public set emission(val: number) {
-    this._emission = val;
-    this._updateUniforms();
-    this.render();
-  }
-  public get dissipation() { return this._dissipation; }
-  public set dissipation(val: number) {
-    this._dissipation = val;
-    this._updateUniforms();
-    this.render();
-  }
-  public get bulbSize() { return this._bulbSize; }
-  public set bulbSize(val: number) {
-    this._bulbSize = val;
-    this._updateUniforms();
-    this.render();
-  }
-  public get objectFit() { return this._objectFit; }
-  public set objectFit(val: RendererOptions["objectFit"]) {
-    this._objectFit = val;
-    this._updateTextureOffset();
-    this.render();
-  }
-
-  public constructor(canvas: HTMLCanvasElement, {
-    frameRate,
-    tileSize,
-    emission,
-    dissipation,
-    bulbSize,
-    objectFit
-  }: RendererOptions) {
+  public constructor(canvas: HTMLCanvasElement, signboard: SignBoard) {
+    this._signboard = signboard;
     this._canvas = canvas;
     this._gl = getWebGLContext(canvas);
     this._program = null;
     this._texture = null;
     this._lastRenderTime = -1;
     this._animationID = -1;
+    this._prevScroll = 0;
     this._uniforms = {
       uInvTileSize: null,
       uResolution: null,
@@ -99,16 +49,9 @@ class Renderer {
       uDissipation: null,
       uBulbSize: null,
       uTexOffset: null,
-      uTexScale: null
+      uTexScale: null,
+      uScrollOffset: null
     };
-
-    // Options
-    this._frameRate = frameRate;
-    this._tileSize = tileSize;
-    this._emission = emission;
-    this._dissipation = dissipation;
-    this._bulbSize = bulbSize;
-    this._objectFit = objectFit;
   }
 
   public destroy() {
@@ -127,13 +70,13 @@ class Renderer {
     gl.useProgram(program);
     this._bindAttributes(program);
     this._bindUniforms(program);
-    this._updateUniforms();
+    this.updateUniforms();
   }
 
   public setTexture(texture: Texture) {
     texture.init(this._gl);
     this._texture = texture;
-    this._updateTextureOffset();
+    this.updateTextureOffset();
   }
 
   public resize() {
@@ -142,7 +85,7 @@ class Renderer {
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
-    this._updateUniforms();
+    this.updateUniforms();
   }
 
   /**
@@ -179,12 +122,50 @@ class Renderer {
     gl.bindTexture(gl.TEXTURE_2D, null);
   }
 
-  private _onAnimationFrame = (time: number) => {
-    const lastTime = this._lastRenderTime;
-    const timeDiff = time - lastTime;
-    const updateInterval = 1000 / this._frameRate;
+  public updateUniforms() {
+    const signboard = this._signboard;
+    const gl = this._gl;
+    const canvas = this._canvas;
+    const uniforms = this._uniforms;
 
-    if (timeDiff >= updateInterval || lastTime < 0) {
+    if (!this._program) return;
+
+    gl.uniform1f(uniforms.uInvTileSize, 1 / signboard.tileSize);
+    gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
+    gl.uniform1f(uniforms.uEmission, signboard.emission);
+    gl.uniform1f(uniforms.uDissipation, 1 / signboard.dissipation);
+    gl.uniform1f(uniforms.uBulbSize, signboard.bulbSize);
+
+    if (this._texture) {
+      this.updateTextureOffset();
+    }
+  }
+
+  public updateTextureOffset() {
+    const signboard = this._signboard;
+    const gl = this._gl;
+    const texture = this._texture;
+    const uniforms = this._uniforms;
+
+    if (!texture) {
+      throw new SignBoardError(ERROR.MESSAGE.TEXTURE_NOT_INITIALIZED, ERROR.CODE.TEXTURE_NOT_INITIALIZED);
+    }
+
+    const renderingSize = { width: gl.drawingBufferWidth, height: gl.drawingBufferHeight };
+    const subImage = getSubImage(texture.size, renderingSize, signboard.objectFit, signboard.contentType);
+
+    gl.uniform2f(uniforms.uTexOffset, subImage.x / renderingSize.width, subImage.y / renderingSize.height);
+    gl.uniform2f(uniforms.uTexScale, renderingSize.width / subImage.width, renderingSize.height / subImage.height);
+  }
+
+  private _onAnimationFrame = (time: number) => {
+    const signboard = this._signboard;
+    const lastTime = this._lastRenderTime;
+    const delta = time - lastTime;
+    const updateInterval = 1000 / signboard.frameRate;
+
+    if (delta >= updateInterval || lastTime < 0) {
+      this._increaseScrollOffset();
       this.render();
       this._lastRenderTime = lastTime + updateInterval;
     }
@@ -252,38 +233,25 @@ class Renderer {
     }
   }
 
-  private _updateUniforms() {
-    const gl = this._gl;
-    const canvas = this._canvas;
-    const uniforms = this._uniforms;
-
-    if (!this._program) return;
-
-    gl.uniform1f(uniforms.uInvTileSize, 1 / this._tileSize);
-    gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
-    gl.uniform1f(uniforms.uEmission, this._emission);
-    gl.uniform1f(uniforms.uDissipation, 1 / this._dissipation);
-    gl.uniform1f(uniforms.uBulbSize, this._bulbSize);
-
-    if (this._texture) {
-      this._updateTextureOffset();
-    }
-  }
-
-  private _updateTextureOffset() {
+  private _increaseScrollOffset() {
+    const signboard = this._signboard;
     const gl = this._gl;
     const texture = this._texture;
     const uniforms = this._uniforms;
+    const scrollSpeed = signboard.scrollSpeed;
+
+    if (scrollSpeed === 0) return;
 
     if (!texture) {
       throw new SignBoardError(ERROR.MESSAGE.TEXTURE_NOT_INITIALIZED, ERROR.CODE.TEXTURE_NOT_INITIALIZED);
     }
 
-    const renderingSize = { width: gl.drawingBufferWidth, height: gl.drawingBufferHeight };
-    const subImage = getSubImage(texture.size, renderingSize, this._objectFit);
+    const prevVal = this._prevScroll;
+    const newVal = prevVal + scrollSpeed * (1000 / signboard.frameRate) / gl.drawingBufferWidth;
 
-    gl.uniform2f(uniforms.uTexOffset, subImage.x / renderingSize.width, subImage.y / renderingSize.height);
-    gl.uniform2f(uniforms.uTexScale, renderingSize.width / subImage.width, renderingSize.height / subImage.height);
+    this._prevScroll = newVal;
+
+    gl.uniform1f(uniforms.uScrollOffset, newVal);
   }
 }
 

@@ -1,6 +1,7 @@
 export const CONTENT_TYPE = {
   IMAGE: "image",
-  VIDEO: "video"
+  VIDEO: "video",
+  TEXT: "text"
 } as const;
 
 export const OBJECT_FIT = {

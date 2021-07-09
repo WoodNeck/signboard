@@ -2,7 +2,7 @@ import SignBoardError from "./core/SignBoardError";
 import * as EVENT from "./const/event";
 import * as ERROR from "./const/error";
 import { Merged, ValueOf } from "./types";
-import { OBJECT_FIT } from "./const/options";
+import { CONTENT_TYPE, OBJECT_FIT } from "./const/options";
 
 export function getElement(el: HTMLElement | string | null): HTMLElement | null {
   let targetEl: HTMLElement | null = null;
@@ -67,10 +67,13 @@ export const merge = <From extends {[key: string]: any}, To extends {[key: strin
   return target as Merged<From, To>;
 };
 
+export const clamp = (x: number, min: number, max: number) => Math.max(Math.min(x, max), min);
+
 export const getSubImage = (
   contentSize: { width: number; height: number },
   renderingSize: { width: number; height: number },
-  objectFit: ValueOf<typeof OBJECT_FIT>
+  objectFit: ValueOf<typeof OBJECT_FIT>,
+  contentType: ValueOf<typeof CONTENT_TYPE>
 ): { x: number; y: number; width: number; height: number } => {
   switch (objectFit) {
     case OBJECT_FIT.FILL: {
@@ -97,7 +100,11 @@ export const getSubImage = (
         return { x: 0, y: (renderingSize.height - newHeight) / 2, width: renderingSize.width, height: newHeight };
       } else {
         const newWidth = contentSize.width * yScale
-        return { x: (renderingSize.width - newWidth) / 2, y: 0, width: newWidth, height: renderingSize.height };
+        const xOffset = contentType === CONTENT_TYPE.TEXT
+          ? 0
+          : (renderingSize.width - newWidth) / 2;
+
+        return { x: xOffset, y: 0, width: newWidth, height: renderingSize.height };
       }
     }
     case OBJECT_FIT.NONE: {
@@ -105,9 +112,9 @@ export const getSubImage = (
     }
     case OBJECT_FIT.SCALE_DOWN: {
       if (contentSize.width > renderingSize.width || contentSize.height > renderingSize.height) {
-        return getSubImage(contentSize, renderingSize, OBJECT_FIT.CONTAIN);
+        return getSubImage(contentSize, renderingSize, OBJECT_FIT.CONTAIN, contentType);
       } else {
-        return getSubImage(contentSize, renderingSize, OBJECT_FIT.NONE);
+        return getSubImage(contentSize, renderingSize, OBJECT_FIT.NONE, contentType);
       }
     }
     default:
@@ -115,5 +122,20 @@ export const getSubImage = (
         ERROR.MESSAGE.WRONG_OPTION(objectFit, "objectFit", Object.keys(OBJECT_FIT).map(key => OBJECT_FIT[key as keyof typeof OBJECT_FIT])),
         ERROR.CODE.WRONG_OPTION
       )
+  }
+}
+
+export const parsePadding = (padding: number | number[]) => {
+  if (!Array.isArray(padding)) {
+    return [padding, padding, padding, padding];
+  } else if (padding.length === 2) {
+    return [padding[0], padding[1], padding[0], padding[1]];
+  } else if (padding.length === 4) {
+    return padding;
+  } else {
+    throw new SignBoardError(
+      ERROR.MESSAGE.WRONG_OPTION(padding, "textPadding", ["number", "[number, number]", "[number, number, number, number]"]),
+      ERROR.CODE.WRONG_OPTION
+    )
   }
 }

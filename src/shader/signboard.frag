@@ -9,6 +9,7 @@ uniform float uDissipation;
 uniform float uBulbSize;
 uniform vec2 uTexOffset;
 uniform vec2 uTexScale;
+uniform float uScrollOffset;
 uniform sampler2D uTexture;
 
 float sstep(float edge0, float edge1, float x) {
@@ -16,6 +17,18 @@ float sstep(float edge0, float edge1, float x) {
   x = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
   // Evaluate polynomial
   return x * x * (3.0 - 2.0 * x);
+}
+
+float circulate(float x, vec2 range) {
+  float diff = range[1] - range[0];
+  float maxOffset = mod((x - range[1]), diff);
+  float minOffset = mod((range[0] - x), diff);
+  float ltMin = step(x, range[0]);
+  float gtMax = step(range[1], x);
+
+  return ltMin * (range[1] - minOffset)
+    + gtMax * (range[0] + maxOffset)
+    + (1.0 - ltMin) * (1.0 - gtMax) * x;
 }
 
 void main() {
@@ -27,9 +40,14 @@ void main() {
 
   float dist = distToCenter.x + distToCenter.y;
   float dissipation = 1.0 - sstep(0.0, pow(uBulbSize, uDissipation), pow(dist, uDissipation));
-  // gl_FragColor = vec4(dissipation, dissipation, dissipation, 1.0);
+  vec2 scrollOffset = vec2(floor(uScrollOffset * tilesPerSide[0]) * invTilesPerSide[0], 0.0);
 
-  vec2 texUV = (tileCenter - uTexOffset) * uTexScale;
+  float origTexScale = step(1.0, uTexScale.x) * uTexScale.x + step(uTexScale.x, 0.999);
+  vec2 origTexRange = vec2(-uTexOffset.x, origTexScale - uTexOffset.x);
+  vec2 texUV = (tileCenter - uTexOffset + scrollOffset) * uTexScale;
+
+  texUV.x = circulate(texUV.x, origTexRange);
+
   vec2 inBorderUV = step(vec2(0.0), texUV) * step(texUV, vec2(1.0));
   float inBorder = step(2.0, inBorderUV.x + inBorderUV.y);
 
