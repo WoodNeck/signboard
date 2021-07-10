@@ -1,0 +1,33 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import AutoInitDemo from "@site/src/components/AutoInit";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+If `false` is given, SignBoard will not automatically initialize immediately after creating instance.
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  autoInit: true
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/hots.jpg")} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  autoInit: false
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <AutoInitDemo src={useBaseUrl("/img/hots.jpg")} />
+  </ColumnItem>
+</Columns>

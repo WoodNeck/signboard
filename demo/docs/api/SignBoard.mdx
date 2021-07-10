@@ -5,6 +5,12 @@ custom_edit_url: null
 ```ts
 class SignBoard
 ```
+WebGL-based LED SignBoard effect for image / video / text
+
+<div className="container">
+  <div className="row mb-2"><div className="col col--6"><strong>Properties</strong></div><div className="col col--6"><strong>Methods</strong></div></div>
+  <div className="row"><div className="col col--6"><a href="#src">src</a><br/><a href="#initialized">initialized</a><br/><a href="#contentType">contentType</a><br/><a href="#contentAttribs">contentAttribs</a><br/><a href="#autoResize">autoResize</a><br/><a href="#autoInit">autoInit</a><br/><a href="#frameRate">frameRate</a><br/><a href="#tileSize">tileSize</a><br/><a href="#emission">emission</a><br/><a href="#dissipation">dissipation</a><br/><a href="#bulbSize">bulbSize</a><br/><a href="#objectFit">objectFit</a><br/><a href="#textOptions">textOptions</a><br/><a href="#textPadding">textPadding</a><br/><a href="#scrollSpeed">scrollSpeed</a><br/><a href="#initOnFontLoad">initOnFontLoad</a></div><div className="col col--6"><a href="#destroy">destroy</a><br/><a href="#init">init</a><br/><a href="#resize">resize</a><br/><a href="#start">start</a><br/><a href="#stop">stop</a><br/><a href="#update">update</a></div></div>
+</div>
 
 ## Constructor
 ```ts
@@ -12,7 +18,254 @@ new SignBoard(canvas, src, options)
 ```
 |PARAMETER|TYPE|OPTIONAL|DEFAULT|DESCRIPTION|
 |:---:|:---:|:---:|:---:|:---:|
-|canvas|string \| HTMLElement|no||CSS query selector or canvas element|
-|src|string|no||Source URL to the image / video|
-|options|[SignBoardOptions](SignBoardOptions)|yes|{}|An options object|
+|canvas|string \| HTMLElement|||CSS query selector or canvas element|
+|src|string|||Source URL to the image / video|
+|options|[SignBoardOptions](SignBoardOptions)|✔️|{}|An options object|
+
+## Properties
+
+### src {#src}
+
+<div className="bulma-tags">
+  <span className="bulma-tag is-warning">readonly</span>
+</div>
+
+Current src of the image/video, or text string when the `contentType` is "text"
+
+**Type**: string
+
+### initialized {#initialized}
+
+<div className="bulma-tags">
+  <span className="bulma-tag is-warning">readonly</span>
+</div>
+
+Whether the [SignBoard#init](SignBoard#init) is called
+
+**Type**: boolean
+
+### contentType {#contentType}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `contentType` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### contentAttribs {#contentAttribs}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `contentAttribs` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### autoResize {#autoResize}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `autoResize` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### autoInit {#autoInit}
+
+<div className="bulma-tags">
+  <span className="bulma-tag is-warning">readonly</span>
+</div>
+
+Current value of the `autoInit` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### frameRate {#frameRate}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `frameRate` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### tileSize {#tileSize}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `tileSize` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### emission {#emission}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `emission` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### dissipation {#dissipation}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `dissipation` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### bulbSize {#bulbSize}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `bulbSize` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### objectFit {#objectFit}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `objectFit` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### textOptions {#textOptions}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `textOptions` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### textPadding {#textPadding}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `textPadding` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### scrollSpeed {#scrollSpeed}
+
+<div className="bulma-tags">
+
+</div>
+
+Current value of the `scrollSpeed` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+### initOnFontLoad {#initOnFontLoad}
+
+<div className="bulma-tags">
+  <span className="bulma-tag is-warning">readonly</span>
+</div>
+
+Current value of the `initOnFontLoad` option
+
+**See**:
+- [SignBoardOptions](SignBoardOptions)
+
+## Methods
+
+### destroy {#destroy}
+
+<div className="bulma-tags">
+
+</div>
+
+Destroy the current instance, and release all resources
+
+**Returns**: void
+
+### init {#init}
+
+<div className="bulma-tags">
+  <span className="bulma-tag is-success">async</span>
+</div>
+
+Initialize SignBoard
+
+**Returns**: Promise&lt;[SignBoard](SignBoard)&gt;
+- The current instance
+
+### resize {#resize}
+
+<div className="bulma-tags">
+
+</div>
+
+Resize SignBoard with the latest size of the canvas
+
+**Returns**: [SignBoard](SignBoard)
+- The current instance
+
+### start {#start}
+
+<div className="bulma-tags">
+
+</div>
+
+Start rendering
+
+**Returns**: [SignBoard](SignBoard)
+- The current instance
+
+### stop {#stop}
+
+<div className="bulma-tags">
+
+</div>
+
+Stop rendering
+
+**Returns**: [SignBoard](SignBoard)
+- The current instance
+
+### update {#update}
+
+<div className="bulma-tags">
+
+</div>
+
+Update the texture
+
+**Returns**: [SignBoard](SignBoard)
+- The current instance
+
+|PARAMETER|TYPE|OPTIONAL|DEFAULT|DESCRIPTION|
+|:---:|:---:|:---:|:---:|:---:|
+|src|string|✔️||New src to the image/video or text string if `contentType` is "text"|
 

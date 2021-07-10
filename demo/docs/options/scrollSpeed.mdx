@@ -1,0 +1,44 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+A horizontal scroll speed (right to left).
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  scrollSpeed: 0
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="🚗" />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  scrollSpeed: 0.3
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="🚗" scrollSpeed={0.3} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  scrollSpeed: -0.3
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="🚗" scrollSpeed={-0.3} />
+  </ColumnItem>
+</Columns>

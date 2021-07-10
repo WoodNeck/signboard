@@ -1,0 +1,44 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+A lightbulb's size inside each tiles.
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  bulbSize: 0.7
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test2.jpg")} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  bulbSize: 0.3
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test2.jpg")} bulbSize={0.3} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  bulbSize: 2.5
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test2.jpg")} bulbSize={2.5} />
+  </ColumnItem>
+</Columns>

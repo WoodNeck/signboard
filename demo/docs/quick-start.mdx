@@ -5,6 +5,9 @@ slug: /quick-start
 custom_edit_url: null
 ---
 
+import SignBoard from "@site/src/components/SignBoard";
+
+## Creating Instance
 First, you should put a canvas element inside your page.
 
 ```html
@@ -16,7 +19,7 @@ Then initialize Sign instance with JavaScript after.
 ```js
 import SignBoard from "signboard";
 
-const signboard = new SignBoard("#signboard", "PATH_TO_YOUR_IMAGE/VIDEO", {
+const signboard = new SignBoard("#signboard", "URL_TO_YOUR_IMAGE/VIDEO", {
   contentType: "image",
   frameRate: 60,
   autoResize: true,
@@ -25,3 +28,32 @@ const signboard = new SignBoard("#signboard", "PATH_TO_YOUR_IMAGE/VIDEO", {
   bulbSize: 0.7
 });
 ```
+
+## Setting Background Colors
+
+At first, SignBoard's background is transparent like below:
+<SignBoard className="demo-canvas" src="/img/test.jpg" />
+
+You can add a wrapper to it, and change its color with CSS like `background-color: #000`.
+
+```html
+<div class="signboard-wrapper" style="background-color: #000;">
+  <canvas id="signboard"></canvas>
+</div>
+```
+
+<div className="signboard-wrapper mb-2" style={{ backgroundColor: "#000", fontSize: 0 }}>
+  <SignBoard className="demo-canvas" src="/img/test.jpg" />
+</div>
+
+And of course, you can add more properties like paddings to customize it.
+
+```html
+<div class="signboard-wrapper" style="background-color: #000; padding: 1em; border-radius: 10px;">
+  <canvas id="signboard"></canvas>
+</div>
+```
+
+<div className="signboard-wrapper" style={{ backgroundColor: "#000", padding: "1em", borderRadius: "10px" }}>
+  <SignBoard className="demo-canvas" src="/img/test.jpg" />
+</div>

@@ -23,5 +23,8 @@ const signboard = new SignBoard("#test", "./video/Astronaut.mp4", { contentType:
 ## License
 [MIT](https://github.com/WoodNeck/signboard/blob/master/LICENSE)
 
+## Demo
+[Demo](https://woodneck.github.io/signboard/)
+
 ## Browser Coverage
 - Evergreen browsers (No IE)

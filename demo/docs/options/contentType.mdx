@@ -1,0 +1,45 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+A type of content.
+Available values: `"image"` / `"video"` / `"text"`
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  contentType: "image"
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test.jpg")} contentType="image" />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  contentType: "video"
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/video/Astronaut.mp4")} contentType="video" />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  contentType: "text"
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src="text" contentType="text" />
+  </ColumnItem>
+</Columns>

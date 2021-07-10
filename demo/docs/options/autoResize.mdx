@@ -1,0 +1,34 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+Enabling this option will make SignBoard to call `resize` whenever window's `resize` event is triggered.
+
+Test this page by changing window size.
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  autoResize: true
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test3.jpg")} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  autoResize: false
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test3.jpg")} autoResize={false} />
+  </ColumnItem>
+</Columns>

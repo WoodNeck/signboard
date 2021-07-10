@@ -1,0 +1,44 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+A value indicating how fast light fades out from the center of each tiles.
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  dissipation: 0.5
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test2.jpg")} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  dissipation: 2
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test2.jpg")} dissipation={2} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  dissipation: 0.1
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test2.jpg")} dissipation={0.1} />
+  </ColumnItem>
+</Columns>

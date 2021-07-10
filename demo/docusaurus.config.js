@@ -6,15 +6,15 @@ const isDev = process.env.NODE_ENV === "development";
 /** @type {import("@docusaurus/types").DocusaurusConfig} */
 module.exports = {
   title: "SignBoard",
-  tagline: "WebGL-based LED SignBoard effect for image / video",
+  tagline: "WebGL-based LED SignBoard effect for image / video / text",
   url: "https://woodneck.github.io",
   baseUrl: isDev ? "/" : "/signboard/",
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
-  organizationName: "WoodNeck", // Usually your GitHub org/user name.
-  projectName: "signboard", // Usually your repo name.
+  organizationName: "WoodNeck",
+  projectName: "signboard",
   plugins: ["docusaurus-plugin-sass"],
   themeConfig: {
     navbar: {
@@ -28,13 +28,29 @@ module.exports = {
         },
         {
           type: "doc",
+          docId: "options/contentType",
+          position: "left",
+          label: "Options"
+        },
+        {
+          type: "doc",
           docId: "api/SignBoard",
           position: "left",
           label: "API"
         },
         {
-          to: "Demo",
-          label: "Demo",
+          to: "Image",
+          label: "Image",
+          position: "left"
+        },
+        {
+          to: "Video",
+          label: "Video",
+          position: "left"
+        },
+        {
+          to: "Text",
+          label: "Text",
           position: "left"
         },
         {
@@ -43,6 +59,11 @@ module.exports = {
           position: "right",
         },
       ],
+    },
+    logo: {
+      alt: 'egjs',
+      src: 'img/egjs_white.svg',
+      href: 'https://naver.github.io/egjs/'
     },
     footer: {
       style: "light",
@@ -61,6 +82,10 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/WoodNeck/signboard/edit/master/demo/",
+          remarkPlugins: [require("remark-breaks")]
+        },
+        pages: {
+          remarkPlugins: [require("remark-breaks")]
         },
         theme: {
           customCss: [

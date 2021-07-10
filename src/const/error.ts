@@ -1,8 +1,8 @@
 /**
  * Error codes of {@link SignBoardError}
- * @name ERROR_CODES
- * @memberof Constants
- * @type object
+ * @name ERROR_CODE
+ * @constant
+ * @type {object}
  * @property {number} WRONG_TYPE 0
  * @property {number} WRONG_OPTION 1
  * @property {number} ELEMENT_NOT_FOUND 2

@@ -50,7 +50,6 @@ export const getWebGLContext = (canvas: HTMLCanvasElement): WebGLRenderingContex
   if (!context) throw new SignBoardError(ERROR.MESSAGE.WEBGL_NOT_SUPPORTED(reason), ERROR.CODE.WEBGL_NOT_SUPPORTED);
 
   canvas.addEventListener("webglcontextlost", e => {
-    console.log("contextlost");
     e.preventDefault();
   }, false);
 

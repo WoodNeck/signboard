@@ -1,0 +1,71 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+> The object-fit CSS property sets how the content of a replaced element, such as an <img\> or <video\>, should be resized to fit its container.
+
+See https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit for details.
+
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  objectFit: "fill"
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/tom.jpg")} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  objectFit: "contain"
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/tom.jpg")} objectFit="contain" />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  objectFit: "cover"
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/tom.jpg")} objectFit="cover" />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  objectFit: "none"
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/tom.jpg")} objectFit="none" />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  objectFit: "scale-down"
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/tom.jpg")} objectFit="scale-down" />
+  </ColumnItem>
+</Columns>

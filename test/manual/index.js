@@ -1,12 +1,12 @@
-const signboard = new SignBoard("#test", "Text? 텍스트! 💤😀🐈", {
-  contentType: "text",
-  objectFit: "fill",
+const signboard = new SignBoard("#test", "./video/Astronaut.mp4", {
+  contentType: "video",
+  objectFit: "cover",
   textOptions: {
     font: "96pt cursive",
     fillStyle: "rgb(192, 192, 192)"
   },
   textPadding: [5, 15, 10, 15],
-  scrollSpeed: 1
+  scrollSpeed: 0
 });
 
 const gui = new dat.GUI({ name: "Controls" });

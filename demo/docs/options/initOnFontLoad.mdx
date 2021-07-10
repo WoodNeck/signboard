@@ -1,0 +1,57 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+A option that can be used when you're using a custom font that should be loaded before initializing.
+Enabling this option will make SignBoard to call `init` after when the font described in `textOptions.font` is loaded.
+
+Test this page with enabling "Disable cache" option in your network tab of your DevTool.
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  initOnFontLoad: false,
+  textOptions: {
+    font: "32pt Bungee"
+  }
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="custom" textOptions={{ font: "32pt Bungee" }} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  initOnFontLoad: true,
+  textOptions: {
+    font: "32pt Bungee"
+  }
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="custom" textOptions={{ font: "32pt Bungee" }} initOnFontLoad={true} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // If you want to check specific character is loaded, by default it will check whether the character "a" is loaded
+  initOnFontLoad: [true, "c"],
+  textOptions: {
+    font: "32pt Bungee"
+  }
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="custom" textOptions={{ font: "32pt Bungee" }} initOnFontLoad={[true, "c"]} />
+  </ColumnItem>
+</Columns>

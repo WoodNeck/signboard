@@ -1,0 +1,38 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+Canvas's 2D context attributes for customizing texts
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  textOptions: {
+    font: "32pt serif",
+    fillStyle: "red"
+  }
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="text" />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  textOptions: {
+    font: "32pt cursive",
+    fillStyle: "#fff"
+  }
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="text" textOptions={{ font: "64pt cursive", fillStyle: "#fff" }} />
+  </ColumnItem>
+</Columns>

@@ -1,10 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka+One&display=swap');
+
+.demo-title-wrapper {
+  background-color: white;
+  width: 50%;
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 320px;
+}
+
+.demo-title {
+  width: 100%;
+  height: 120px;
+}
+
+.demo-subtitle {
+  width: 100%;
+  height: 200px;
+}
+
 .demo-canvas {
   width: 100%;
   height: 400px;
+}
+
+.options-canvas {
+  width: 100%;
+  height: 200px;
 }
 
 .demo-canvas-wrapper {
   background-color: black;
   padding: 10px;
   border-radius: 10px;
+  display: flex;
+}
+
+.playground-canvas {
+  flex: 1;
+}
+
+.playground-canvas-wrapper {
+  background-color: black;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  position: relative;
+}
+
+.playground-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.main-header {
+  font-family: "Bungee", sans-serif;
+}
+
+.main-features-wrapper {
+  background-color: black;
+  padding: 10px;
+  box-sizing: border-box;
 }

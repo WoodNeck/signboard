@@ -19,6 +19,8 @@
   --ifm-color-danger: #f14668;
   --ifm-color-success: #48c78e;
   --ifm-code-font-size: 95%;
+  --ifm-footer-background-color: #48c78e;
+  --ifm-footer-color: white;
 }
 html[data-theme='dark'] {
   --ifm-background-color: #242526 !important;

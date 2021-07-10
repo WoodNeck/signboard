@@ -1,0 +1,58 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+A padding values that will be used for rendering text.
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  textPadding: 0
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="🙄" />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  textPadding: 10
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="🙄" textPadding={10} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // [vertical, horizontal]
+  textPadding: [10, 0]
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="🙄" textPadding={[10, 0]} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // [top, right, bottom, left]
+  textPadding: [20, 0, -5, 10]
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" contentType="text" src="🙄" textPadding={[20, 0, -5, 10]} />
+  </ColumnItem>
+</Columns>

@@ -12,6 +12,10 @@ class Renderer {
   private _canvas: HTMLCanvasElement;
   private _gl: WebGLRenderingContext;
   private _program: WebGLProgram | null;
+  private _buffers: {
+    position: WebGLBuffer | null,
+    texcoord: WebGLBuffer | null
+  }
   private _uniforms: {
     uInvTileSize: WebGLUniformLocation | null,
     uResolution: WebGLUniformLocation | null,
@@ -26,6 +30,7 @@ class Renderer {
   private _lastRenderTime: number;
   private _animationID: number;
   private _prevScroll: number;
+  private _contextLost: boolean;
 
   public get animating() { return this._animationID >= 0; }
 
@@ -42,6 +47,10 @@ class Renderer {
     this._lastRenderTime = -1;
     this._animationID = -1;
     this._prevScroll = 0;
+    this._buffers = {
+      position: null,
+      texcoord: null
+    }
     this._uniforms = {
       uInvTileSize: null,
       uResolution: null,
@@ -52,16 +61,33 @@ class Renderer {
       uTexScale: null,
       uScrollOffset: null
     };
+    this._contextLost = false;
   }
 
   public destroy() {
     this.stop();
 
+    const gl = this._gl;
+    const texture = this._texture?.webGLTexture;
+
+    gl.deleteProgram(this._program);
+
+    gl.deleteBuffer(this._buffers.position);
+    gl.deleteBuffer(this._buffers.texcoord);
+
+    if (texture) {
+      gl.deleteTexture(texture);
+    }
+
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+
     this._texture = null;
-    this._gl.deleteProgram(this._program);
+    this._contextLost = true;
   }
 
   public init() {
+    if (this._contextLost) return;
+
     const gl = this._gl;
     const program = this._createWebGLProgram();
 
@@ -109,6 +135,8 @@ class Renderer {
   public render() {
     const gl = this._gl;
     const texture = this._texture;
+
+    if (!this._signboard.initialized) return;
 
     if (!texture) {
       throw new SignBoardError(ERROR.MESSAGE.TEXTURE_NOT_INITIALIZED, ERROR.CODE.TEXTURE_NOT_INITIALIZED);
@@ -175,7 +203,11 @@ class Renderer {
 
   private _compileShader(src: string, type: WebGLRenderingContextBase["VERTEX_SHADER"] | WebGLRenderingContextBase["FRAGMENT_SHADER"]) {
     const gl = this._gl;
-    const shader = gl.createShader(type)!;
+    const shader = gl.createShader(type);
+
+    if (!shader) {
+      throw new SignBoardError(ERROR.MESSAGE.FAILED_COMPILE_SHADER(`Unexpected Error: ${gl.getError()}`), ERROR.CODE.FAILED_COMPILE_SHADER);
+    }
 
     gl.shaderSource(shader, src);
     gl.compileShader(shader);
@@ -212,6 +244,9 @@ class Renderer {
 
     const positionBuffer = gl.createBuffer();
     const texcoordBuffer = gl.createBuffer();
+
+    this._buffers.position = positionBuffer;
+    this._buffers.texcoord = texcoordBuffer;
 
     gl.enableVertexAttribArray(positionLocation);
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);

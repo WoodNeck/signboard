@@ -14,10 +14,18 @@ interface SignBoardOptions
 
 |PARAMETER|TYPE|OPTIONAL|DEFAULT|DESCRIPTION|
 |:---:|:---:|:---:|:---:|:---:|
-|contentType|"image" \| "video"|yes|"image"||
-|frameRate|number|yes|60||
-|autoResize|boolean|yes|true||
-|tileSize|number|yes|8||
-|emission|number|yes|1||
-|bulbSize|number|yes|0.7||
+|contentType|"image" \| "video" \| "text"|✔️|"image"|A type of content|
+|contentAttribs|object|✔️|{}|Additional attributes for image / video element (if you need it)|
+|frameRate|number|✔️|60|A number of rendering frames per second for video / text|
+|autoResize|boolean|✔️|true|Enabling this option will make SignBoard to call `resize` whenever window's `resize` event is triggered|
+|autoInit|boolean|✔️|true|If `false` is given, SignBoard will not automatically initialize immediately after creating instance|
+|tileSize|number|✔️|8|A size of each tile blocks, in px|
+|emission|number|✔️|1.5|LED light emission modifier, bigger the brighter. `emission: 1` will render the original color of the contents|
+|dissipation|number|✔️|0.5|A value indicating how fast light fades out from the center of each tiles|
+|bulbSize|number|✔️|0.7|A lightbulb's size inside each tiles|
+|objectFit|string|✔️|"fill"|The object-fit CSS property sets how the content of a replaced element, such as an <img\> or <video\>, should be resized to fit its container.<br/>See https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit for details|
+|textOptions|object|✔️|{}|Canvas's 2D context attributes for customizing texts|
+|textPadding|number \| Array&lt;number&gt;|✔️|0|A padding values that will be used for rendering text|
+|scrollSpeed|number|✔️|0|A horizontal scroll speed (right to left)|
+|initOnFontLoad|boolean|✔️|false|A option that can be used when you're using a custom font that should be loaded before initializing.<br/>Enabling this option will make SignBoard to call `init` after when the font described in `textOptions.font` is loaded.|
 

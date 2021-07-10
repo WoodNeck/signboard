@@ -4,6 +4,7 @@ class ImageTexture implements Texture {
   private _image: HTMLImageElement;
   private _texture: WebGLTexture | null;
 
+  public get webGLTexture() { return this._texture; }
   public get size() { return {
     width: this._image.naturalWidth,
     height: this._image.naturalHeight
@@ -27,6 +28,12 @@ class ImageTexture implements Texture {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this._image);
+  }
+
+  public update(src?: string) {
+    if (!src) return;
+
+    this._image.src = src;
   }
 }
 

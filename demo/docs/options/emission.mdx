@@ -1,0 +1,33 @@
+import Columns from "@site/src/components/Columns";
+import ColumnItem from "@site/src/components/ColumnItem";
+import BlackSignBoard from "@site/src/components/BlackSignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
+LED light emission modifier, bigger the brighter.
+`emission: 1` will render the original color of the contents.
+
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  // Default
+  emission: 1.5
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test.jpg")} />
+  </ColumnItem>
+</Columns>
+<Columns>
+  <ColumnItem is={6}>
+
+  ```js
+  emission: 3
+  ```
+
+  </ColumnItem>
+  <ColumnItem is={6}>
+    <BlackSignBoard className="options-canvas" src={useBaseUrl("/img/test.jpg")} emission={3} />
+  </ColumnItem>
+</Columns>

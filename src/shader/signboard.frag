@@ -42,8 +42,8 @@ void main() {
   float dissipation = 1.0 - sstep(0.0, pow(uBulbSize, uDissipation), pow(dist, uDissipation));
   vec2 scrollOffset = vec2(floor(uScrollOffset * tilesPerSide[0]) * invTilesPerSide[0], 0.0);
 
-  float origTexScale = step(1.0, uTexScale.x) * uTexScale.x + step(uTexScale.x, 0.999);
-  vec2 origTexRange = vec2(-uTexOffset.x, origTexScale - uTexOffset.x);
+  float invTexScaleHalf = max(uTexScale.x * 0.5, 0.5);
+  vec2 origTexRange = vec2(0.5 - invTexScaleHalf, 0.5 + invTexScaleHalf);
   vec2 texUV = (tileCenter - uTexOffset + scrollOffset) * uTexScale;
 
   texUV.x = circulate(texUV.x, origTexRange);

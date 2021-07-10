@@ -1,11 +1,15 @@
 {
   "tags": {
-    "allowUnknownTags" : false,
+    "allowUnknownTags" : true,
     "dictionaries": ["jsdoc", "closure"]
   },
   "source": {
-    "include": ["src", "README.md"],
+    "include": ["src"],
     "includePattern": ".+\\.(j|t)s(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "opts": {
+    "expendsItemMembers": true,
+    "recurse": true
   }
 }
