@@ -6,6 +6,7 @@ custom_edit_url: null
 ---
 
 import SignBoard from "@site/src/components/SignBoard";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 ## Creating Instance
 First, you should put a canvas element inside your page.
@@ -32,7 +33,7 @@ const signboard = new SignBoard("#signboard", "URL_TO_YOUR_IMAGE/VIDEO", {
 ## Setting Background Colors
 
 At first, SignBoard's background is transparent like below:
-<SignBoard className="demo-canvas" src="/img/test.jpg" />
+<SignBoard className="demo-canvas" src={useBaseUrl("/img/test.jpg")} />
 
 You can add a wrapper to it, and change its color with CSS like `background-color: #000`.
 
@@ -43,7 +44,7 @@ You can add a wrapper to it, and change its color with CSS like `background-colo
 ```
 
 <div className="signboard-wrapper mb-2" style={{ backgroundColor: "#000", fontSize: 0 }}>
-  <SignBoard className="demo-canvas" src="/img/test.jpg" />
+  <SignBoard className="demo-canvas" src={useBaseUrl("/img/test.jpg")} />
 </div>
 
 And of course, you can add more properties like paddings to customize it.
@@ -55,5 +56,5 @@ And of course, you can add more properties like paddings to customize it.
 ```
 
 <div className="signboard-wrapper" style={{ backgroundColor: "#000", padding: "1em", borderRadius: "10px" }}>
-  <SignBoard className="demo-canvas" src="/img/test.jpg" />
+  <SignBoard className="demo-canvas" src={useBaseUrl("/img/test.jpg")} />
 </div>
