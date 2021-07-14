@@ -77,6 +77,7 @@ class TextureLoader {
         loop: true,
         playsInline: true,
         autoplay: true,
+        muted: true,
         crossOrigin: "anonymous",
         ...signboard.contentAttribs
       } as Attributes<HTMLVideoElement>;

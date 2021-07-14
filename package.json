@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WoodNeck/signboard.js.git"
+    "url": "git+https://github.com/WoodNeck/signboard.git"
   },
   "author": "WoodNeck",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/WoodNeck/signboard.js/issues"
+    "url": "https://github.com/WoodNeck/signboard/issues"
   },
-  "homepage": "https://github.com/WoodNeck/signboard.js#readme",
+  "homepage": "https://github.com/WoodNeck/signboard#readme",
   "devDependencies": {
     "@daybrush/jsdoc": "^0.3.10",
     "@egjs/build-helper": "0.0.5",
