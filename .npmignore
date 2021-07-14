@@ -5,8 +5,10 @@ demo/
 
 .editorconfig
 .eslintrc.js
-jsdoc.json\
+jsdoc.json
+jsdoc-to-mdx.json
 rollup.config.js
 rollup.config.dev.js
 tsconfig.json
 tsconfig.declaration.json
+TODO.md
