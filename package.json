@@ -1,6 +1,6 @@
 {
   "name": "signboard",
-  "version": "1.0.2",
+  "version": "1.0.2-snapshot",
   "description": "WebGL-based LED SignBoard effect for image / video / text",
   "main": "dist/signboard.js",
   "module": "dist/signboard.esm.js",
