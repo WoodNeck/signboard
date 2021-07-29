@@ -53,7 +53,7 @@ class TextureLoader {
       } as Attributes<HTMLImageElement>;
 
       for (const key in attribs) {
-        image.setAttribute(key, (attribs as any)[key]);
+        image[key] = attribs[key];
       }
 
       image.src = src;
@@ -83,7 +83,7 @@ class TextureLoader {
       } as Attributes<HTMLVideoElement>;
 
       for (const key in attribs) {
-        video.setAttribute(key, (attribs as any)[key]);
+        video[key] = attribs[key];
       }
 
       video.src = src;
