@@ -2,6 +2,5 @@
 node_modules/
 declaration/
 test/manual/dist/
-dist/
 demo/release/
 TODO.md
